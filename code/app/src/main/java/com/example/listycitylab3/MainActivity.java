@@ -24,6 +24,13 @@ public class MainActivity extends AppCompatActivity implements AddCityFragment.A
         cityAdapter.add(city);
         cityAdapter.notifyDataSetChanged();
     }
+    
+    @Override
+    public void editCity(City city, String name, String province) {
+        city.setName(name);
+        city.setProvince(province);
+        cityAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements AddCityFragment.A
         FloatingActionButton fab = findViewById(R.id.button_add_city);
         fab.setOnClickListener(v -> {
             new AddCityFragment().show(getSupportFragmentManager(), "Add City");
+        });
+
+        // editing existing city/province instead of adding
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            City selectedCity = dataList.get(position);
+            AddCityFragment.newInstance(selectedCity).show(getSupportFragmentManager(), "Edit City");
         });
     }
 }
